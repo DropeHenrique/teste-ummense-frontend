@@ -21,11 +21,27 @@
               <div class="form-group">
                 <label for="password">Senha:</label>
                 <!-- Remova o 'required' se for uma edição -->
-                <input type="password" id="password" v-model="user.password" class="form-control" :required="!isEdit">
+                <div class="input-group">
+                  <input :type="showPassword ? 'text' : 'password'" id="password" v-model="user.password" class="form-control" :required="!isEdit">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-primary mx-2" @click="togglePasswordVisibility">
+                      <i v-if="!showPassword" class="bi bi-eye-slash"></i>
+                      <i v-else class="bi bi-eye"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
                 <label for="password_confirmation">Confirmação de Senha:</label>
-                <input type="password" id="password_confirmation" v-model="user.password_confirmation" class="form-control" :required="!isEdit">
+                <div class="input-group">
+                  <input :type="showPassword ? 'text' : 'password'" id="password_confirmation" v-model="user.password_confirmation" class="form-control" :required="!isEdit">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-primary mx-2" @click="togglePasswordVisibility">
+                      <i v-if="!showPassword" class="bi bi-eye-slash"></i>
+                      <i v-else class="bi bi-eye"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
               <button type="submit" class="btn btn-primary mt-2">{{ isEdit ? 'Editar' : 'Criar' }}</button>
             </form>
@@ -51,9 +67,11 @@ export default {
         password_confirmation: ''
       },
       isEdit: false,
+      showPassword: false,
     };
   },
   methods: {
+
     // Método para criar ou editar um usuário na API Laravel
     submitForm() {
       const apiUrl = this.isEdit ? `${process.env.VUE_APP_API_URL}/api/users/${this.$route.params.id}` : `${process.env.VUE_APP_API_URL}/api/users`;
@@ -63,7 +81,6 @@ export default {
             url: apiUrl,
             method: this.isEdit ? 'put' : 'post',
             data: this.user,
-
           })
           .then(() => {
             if (this.isEdit) {
@@ -91,6 +108,10 @@ export default {
               console.error(error);
             });
       }
+    },
+    // Método para alternar a visibilidade da senha
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
   },
   created() {

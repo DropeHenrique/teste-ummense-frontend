@@ -2,7 +2,6 @@
   <div class="container">
     <div class="row justify-content-center mt-5">
       <div class="col-md-6">
-        <!-- Adicione a classe "card" para criar um card -->
         <div class="card">
           <div class="card-body">
             <h1 class="card-title text-center">Acesse a sua conta</h1>
@@ -13,21 +12,28 @@
               </div>
               <div class="form-group">
                 <label for="password">Senha:</label>
-                <input type="password" id="password" v-model="password" class="form-control" required>
+                <div class="input-group">
+                  <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password" class="form-control" required>
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-primary mx-2" @click="togglePasswordVisibility">
+                      <i v-if="!showPassword" class="bi bi-eye-slash"></i>
+                      <i v-else class="bi bi-eye"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
               <button type="submit" class="btn btn-primary mt-3 btn-block">Acesse a Plataforma</button>
             </form>
             <p class="mt-3 text-center">Não tem uma conta? <router-link to="/users/create">Crie uma agora</router-link></p>
           </div>
         </div>
-        <!-- Fim do card -->
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
+
 
 export default {
   name: 'LoginForm',
@@ -35,9 +41,14 @@ export default {
     return {
       email: '',
       password: '',
+      showPassword: false,
     };
   },
   methods: {
+    togglePasswordVisibility() {
+      // Função para alternar a exibição da senha
+      this.showPassword = !this.showPassword;
+    },
     loginForm() {
       axios
           .post(`${process.env.VUE_APP_API_URL}/api/login`, {
