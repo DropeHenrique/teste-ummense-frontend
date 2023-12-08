@@ -56,7 +56,7 @@ export default {
   methods: {
     // Método para criar ou editar um usuário na API Laravel
     submitForm() {
-      const apiUrl = this.isEdit ? `${process.env.VUE_APP_API_URL}/api/users/${this.$route.params.id}` : `${process.env.VUE_APP_API_URL}/api/usersssss`;
+      const apiUrl = this.isEdit ? `${process.env.VUE_APP_API_URL}/api/users/${this.$route.params.id}` : `${process.env.VUE_APP_API_URL}/api/users`;
 
       axios
           .request({
